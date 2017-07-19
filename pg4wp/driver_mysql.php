@@ -1,4 +1,6 @@
 <?php
+
+defined( 'ABSPATH' ) or die();
 /**
  * @package PostgreSQL_For_Wordpress
  * @version $Id$

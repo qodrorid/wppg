@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or die();
 
 class wpdb3 extends wpdb2{
 	public function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
