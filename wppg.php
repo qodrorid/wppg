@@ -19,8 +19,15 @@ function wppgplugin_admin_options() {
 }
 
 function wppgplugin_admin_submenu() {
+	if (!empty($_POST)){
+		if(!empty($_POST['pg_action']) && $_POST['pg_action']=='move_pg4wp'){
+			// script pindah folder
+			echo "string";
+		}
+	}
 	?>
 		<form>
+			<input type="hidden" name="pg_action" value="move_pg4wp">
 			<input type="submit" name="submit" class="btn-primary" value="submit">	
 		</form>
 	<?php
