@@ -21,17 +21,43 @@ function wppgplugin_admin_options() {
 function wppgplugin_admin_submenu() {
 	if (!empty($_POST)){
 		if(!empty($_POST['pg_action']) && $_POST['pg_action']=='move_pg4wp'){
-			// script pindah folder
-			echo "string";
+			$src = plugin_dir_path( __FILE__ ).'pg4wp';
+			$dst = explode('plugins', $src);
+			$dst = $dst[0].'pg4wp';
+			recurse_copy($src, $dst);
+			echo "Copy file from $src to $dst";
 		}
 	}
-	?>
-		<form>
+	?> 
+		<form method="post">
 			<input type="hidden" name="pg_action" value="move_pg4wp">
-			<input type="submit" name="submit" class="btn-primary" value="submit">	
+			<input type="submit" name="submit" value="change database to postgressql">	
 		</form>
 	<?php
 }
 
+function recurse_copy($src,$dst) { 
+    $dir = opendir($src); 
+    @mkdir($dst); 
+    while(false !== ( $file = readdir($dir)) ) { 
+        if (( $file != '.' ) && ( $file != '..' )) { 
+            if ( is_dir($src . '/' . $file) ) { 
+                recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+            } 
+            else { 
+                copy($src . '/' . $file,$dst . '/' . $file); 
+            } 
+        } 
+    } 
+    closedir($dir); 
+} 
+
+// SUDAH DIKERJAKAN
 // - buat sub menu wppg di menu settings
 // - buat tombol change database to postgressql 
+// - copy folder pg4wp ke ../wp-content/pg4wp
+
+// BELUM DIKERJAKAN
+// - copy file ../pg4wp/db.php ke ../wp-content/db.php
+// - buat tombol disable database postgressql
+// - ketika diklik, hapus folder ../wp-content/pg4wp dam file ../wp-content/db.php
