@@ -25,19 +25,32 @@ function wppgplugin_admin_submenu() {
 			$dst = explode('plugins', $src);
 			$dst = $dst[0].'pg4wp';
 			recurse_copy($src, $dst);
-			echo "Copy file from $src to $dst";
+			echo "Copy folder from $src to $dst <br>";
+
+			$src = plugin_dir_path( __FILE__ ).'pg4wp/db.php';
+			$dst = explode('plugins', $src);
+			$dst = $dst[0].'db.php';
+			recurse_copy($src, $dst);
+			echo "Copy file from $src to $dst <br>";
 		}
 	}
-	?> 
-		<form method="post">
+	?> 	
+		<style>
+			#wppg-from {
+				margin-top: 50px;
+			}
+		</style>
+		<form method="post" id="wppg-from">
+			<h1>WPPG</h1>
+			<p>Click this button for install this wordpress using postgressql database.</p>
 			<input type="hidden" name="pg_action" value="move_pg4wp">
-			<input type="submit" name="submit" value="change database to postgressql">	
+			<input type="submit" name="submit" class="button button-primary" value="change database to postgressql">	
 		</form>
 	<?php
 }
 
 function recurse_copy($src,$dst) { 
-    $dir = opendir($src); 
+    $dir = opendir($src); echo '123';
     @mkdir($dst); 
     while(false !== ( $file = readdir($dir)) ) { 
         if (( $file != '.' ) && ( $file != '..' )) { 
