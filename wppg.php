@@ -13,6 +13,14 @@
 
 defined( 'ABSPATH' ) or die();
 
+/**
+ * need update code in file wp-include/load.php line: 399 when db.php not loaded in wordpress
+ *
+ * require_once( WP_CONTENT_DIR . '/db.php' ); 
+ * to 
+ * include( WP_CONTENT_DIR . '/db.php' );
+ */
+
 add_action( 'admin_menu', 'wppgplugin_admin_options' );
 function wppgplugin_admin_options() {
 	add_options_page( 'WPPG', 'WPPG', 'manage_options', 'wppg.php', 'wppgplugin_admin_submenu' );
