@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) or die();
 
 add_action( 'admin_menu', 'wppgplugin_admin_options' );
 function wppgplugin_admin_options() {
-	add_options_page( 'Myplugin', 'WPPG', 'manage_options', 'wppg.php', 'wppgplugin_admin_submenu' );
+	add_options_page( 'WPPG', 'WPPG', 'manage_options', 'wppg.php', 'wppgplugin_admin_submenu' );
 }
 
 function wppgplugin_admin_submenu() {
