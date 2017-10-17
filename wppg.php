@@ -101,13 +101,3 @@ function deleteDir($dirPath) {
     }
     rmdir($dirPath);
 }
-
-// SUDAH DIKERJAKAN
-// - buat sub menu wppg di menu settings
-// - buat tombol change database to postgressql 
-// - copy folder pg4wp ke ../wp-content/pg4wp
-
-// BELUM DIKERJAKAN
-// - copy file ../pg4wp/db.php ke ../wp-content/db.php
-// - buat tombol disable database postgressql
-// - ketika diklik, hapus folder ../wp-content/pg4wp dam file ../wp-content/db.php
