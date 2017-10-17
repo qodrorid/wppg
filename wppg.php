@@ -24,14 +24,14 @@ function wppgplugin_admin_submenu() {
 			$src = plugin_dir_path( __FILE__ ).'pg4wp';
 			$dst = explode('plugins', $src);
 			$dst = $dst[0].'pg4wp';
-			recurse_copy($src, $dst);
 			echo "Copy folder from $src to $dst <br>";
+			recurse_copy($src, $dst);
 
 			$src = plugin_dir_path( __FILE__ ).'pg4wp/db.php';
 			$dst = explode('plugins', $src);
 			$dst = $dst[0].'db.php';
-			recurse_copy($src, $dst);
 			echo "Copy file from $src to $dst <br>";
+			copy($src, $dst);
 		}
 	}
 	?> 	
@@ -50,8 +50,8 @@ function wppgplugin_admin_submenu() {
 }
 
 function recurse_copy($src,$dst) { 
-    $dir = opendir($src); echo '123';
-    @mkdir($dst); 
+    $dir = opendir($src);// echo '123';
+    mkdir($dst); 
     while(false !== ( $file = readdir($dir)) ) { 
         if (( $file != '.' ) && ( $file != '..' )) { 
             if ( is_dir($src . '/' . $file) ) { 
