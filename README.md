@@ -5,7 +5,15 @@ Redevelop from PG4WP plugin http://wordpress.org/plugins/postgresql-for-wordpres
 Installation
 
 - Install and active postgress db in Settings > WPPG > change database to Postgressql
-- Need update code in file wp-include/load.php line: 399 when db.php not loaded in wordpress from "require_once( WP_CONTENT_DIR . '/db.php' );" to "include( WP_CONTENT_DIR . '/db.php' );"
+- Create database and user in your Postgressql
+	- open your terminal in linux
+	- sudo su - postgress
+	- psql
+	- create database your_database;
+	- create user your_user with password 'your_password';
+	- grant all privileges on database your_database to your_user;
+	- \q for exit
+- Update your wp-config.php file
 
 How to uninstall WPPG
 

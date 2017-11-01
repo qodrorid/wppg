@@ -1,25 +1,18 @@
 <?php
 /*
 	Plugin Name: WPPG
-	Plugin URI: http://qodr.or.id/
+	Plugin URI: https://wordpress.org/plugins/wppg/
 	Version: 1.0.0
 	Author: Qodr Team
 	Author URI: http://qodr.or.id/
 	Description: Wordpress using postgressql
 	Text Domain: wppg
 	Domain Path: /languages/
-	License: GPL
+	License:      GPL2
+	License URI:  https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 defined( 'ABSPATH' ) or die();
-
-/**
- * need update code in file wp-include/load.php line: 399 when db.php not loaded in wordpress
- *
- * require_once( WP_CONTENT_DIR . '/db.php' ); 
- * to 
- * include( WP_CONTENT_DIR . '/db.php' );
- */
 
 add_action( 'admin_menu', 'wppgplugin_admin_options' );
 function wppgplugin_admin_options() {
