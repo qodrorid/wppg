@@ -28,43 +28,43 @@ defined( 'ABSPATH' ) or die();
 	$GLOBALS['pg4wp_connstr'] = '';
 	$GLOBALS['pg4wp_conn'] = false;
 	
-	function wpsql_num_rows($result)
+	function wppg_sql_num_rows($result)
 		{ return pg_num_rows($result); }
-	function wpsql_numrows($result)
+	function wppg_sql_numrows($result)
 		{ return pg_num_rows($result); }
-	function wpsql_num_fields($result)
+	function wppg_sql_num_fields($result)
 		{ return pg_num_fields($result); }
-	function wpsql_fetch_field($result)
+	function wppg_sql_fetch_field($result)
 		{ return 'tablename'; }
-	function wpsql_fetch_object($result)
+	function wppg_sql_fetch_object($result)
 		{ return pg_fetch_object($result); }
-	function wpsql_free_result($result)
+	function wppg_sql_free_result($result)
 		{ return pg_free_result($result); }
-	function wpsql_affected_rows()
+	function wppg_sql_affected_rows()
 	{
 		if( $GLOBALS['pg4wp_result'] === false)
 			return 0;
 		else
 			return pg_affected_rows($GLOBALS['pg4wp_result']);
 	}
-	function wpsql_fetch_row($result)
+	function wppg_sql_fetch_row($result)
 		{ return pg_fetch_row($result); }
-	function wpsql_data_seek($result, $offset)
+	function wppg_sql_data_seek($result, $offset)
 		{ return pg_result_seek ( $result, $offset ); }
-	function wpsql_error()
+	function wppg_sql_error()
 		{ if( $GLOBALS['pg4wp_conn']) return pg_last_error(); else return ''; }
-	function wpsql_fetch_assoc($result) { return pg_fetch_assoc($result); }
-	function wpsql_escape_string($s) { return pg_escape_string($s); }
-	function wpsql_real_escape_string($s,$c=NULL) { return pg_escape_string($s); }
-	function wpsql_get_server_info() { return '5.0.30'; } // Just want to fool wordpress ...
+	function wppg_sql_fetch_assoc($result) { return pg_fetch_assoc($result); }
+	function wppg_sql_escape_string($s) { return pg_escape_string($s); }
+	function wppg_sql_real_escape_string($s,$c=NULL) { return pg_escape_string($s); }
+	function wppg_sql_get_server_info() { return '5.0.30'; } // Just want to fool wordpress ...
 	
-/**** Modified version of wpsql_result() is at the bottom of this file
-	function wpsql_result($result, $i, $fieldname)
+/**** Modified version of wppg_sql_result() is at the bottom of this file
+	function wppg_sql_result($result, $i, $fieldname)
 		{ return pg_fetch_result($result, $i, $fieldname); }
 ****/
 
 	// This is a fake connection except during installation
-	function wpsql_connect($dbserver, $dbuser, $dbpass)
+	function wppg_sql_connect($dbserver, $dbuser, $dbpass)
 	{
 		$GLOBALS['pg4wp_connstr'] = '';
 		$hostport = explode(':', $dbserver);
@@ -82,13 +82,13 @@ defined( 'ABSPATH' ) or die();
 		
 		// While installing, we test the connection to 'template1' (as we don't know the effective dbname yet)
 		if( defined('WP_INSTALLING') && WP_INSTALLING)
-			return wpsql_select_db( 'template1');
+			return wppg_sql_select_db( 'template1');
 		
 		return 1;
 	}
 	
 	// The effective connection happens here
-	function wpsql_select_db($dbname, $connection_id = 0)
+	function wppg_sql_select_db($dbname, $connection_id = 0)
 	{
 		$pg_connstr = $GLOBALS['pg4wp_connstr'].' dbname='.$dbname;
 
@@ -108,12 +108,12 @@ defined( 'ABSPATH' ) or die();
 		// Execute early transmitted commands if needed
 		if( isset($GLOBALS['pg4wp_pre_sql']) && !empty($GLOBALS['pg4wp_pre_sql']))
 			foreach( $GLOBALS['pg4wp_pre_sql'] as $sql2run)
-				wpsql_query( $sql2run);
+				wppg_sql_query( $sql2run);
 		
 		return $GLOBALS['pg4wp_conn'];
 	}
 
-	function wpsql_fetch_array($result)
+	function wppg_sql_fetch_array($result)
 	{
 		$res = pg_fetch_array($result);
 		
@@ -123,7 +123,7 @@ defined( 'ABSPATH' ) or die();
 		return $res;
 	}
 	
-	function wpsql_query($sql)
+	function wppg_sql_query($sql)
 	{
 		if( !$GLOBALS['pg4wp_conn'])
 		{
@@ -154,7 +154,7 @@ defined( 'ABSPATH' ) or die();
 		return $GLOBALS['pg4wp_result'];
 	}
 	
-	function wpsql_insert_id($lnk = NULL)
+	function wppg_sql_insert_id($lnk = NULL)
 	{
 		global $wpdb;
 		$ins_field = $GLOBALS['pg4wp_ins_field'];
@@ -188,7 +188,7 @@ defined( 'ABSPATH' ) or die();
 				$data = pg_fetch_result($res, 0, 0);
 			elseif( PG4WP_DEBUG || PG4WP_ERROR_LOG)
 			{
-				$log = '['.microtime(true)."] wpsql_insert_id() was called with '$table' and '$ins_field'".
+				$log = '['.microtime(true)."] wppg_sql_insert_id() was called with '$table' and '$ins_field'".
 						" and generated an error. The latest INSERT query was :\n'$lastq'\n";
 				error_log( $log, 3, PG4WP_LOG.'pg4wp_errors.log');
 			}
@@ -491,10 +491,10 @@ defined( 'ABSPATH' ) or die();
 	}
 
 /*
-	Quick fix for wpsql_result() error and missing wpsql_errno() function
-	Source : http://vitoriodelage.wordpress.com/2014/06/06/add-missing-wpsql_errno-in-pg4wp-plugin/
+	Quick fix for wppg_sql_result() error and missing wppg_sql_errno() function
+	Source : http://vitoriodelage.wordpress.com/2014/06/06/add-missing-wppg_sql_errno-in-pg4wp-plugin/
 */
-	function wpsql_result($result, $i, $fieldname = null) {
+	function wppg_sql_result($result, $i, $fieldname = null) {
 		if (is_resource($result)) {
 			if ($fieldname) {
 				return pg_fetch_result($result, $i, $fieldname);
@@ -504,12 +504,12 @@ defined( 'ABSPATH' ) or die();
 		}
 	}
 	
-	function wpsql_errno( $connection) {
+	function wppg_sql_errno( $connection) {
 		$result = pg_get_result($connection);
 		$result_status = pg_result_status($result);
 		return pg_result_error_field($result_status, PGSQL_DIAG_SQLSTATE);
 	}
 
-	function wpsql_ping(){
+	function wppg_sql_ping(){
 		return true;
 	}

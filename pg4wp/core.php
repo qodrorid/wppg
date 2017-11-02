@@ -28,7 +28,7 @@ if(!class_exists('wpdb2')){
 		'define( '	=> '// define( ',
 		'class wpdb'	=> 'class wpdb2',
 		'new wpdb'	=> 'new wpdb2',
-		'mysql_'	=> 'wpsql_',
+		'mysql_'	=> 'wppg_sql_',
 		'<?php'		=> '',
 		'?>'		=> '',
 		'is_resource'		=> '!empty',
@@ -39,5 +39,5 @@ require_once( PG4WP_ROOT.'/wpdb3.php');
 
 // Create wpdb object if not already done
 if (! isset($wpdb)){
-	$wpdb = new wpdb3( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
+	$wpdb = new wppg_db( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
 }

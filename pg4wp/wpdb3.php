@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or die();
 
-class wpdb3 extends wpdb2{
+class wppg_db extends wpdb2{
 	public function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
 		parent::__construct($dbuser, $dbpassword, $dbname, $dbhost);
 	}
