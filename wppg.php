@@ -21,6 +21,7 @@ function wppgplugin_admin_options() {
 
 function wppgplugin_admin_submenu() {
 	$wppg = false;
+	$wpmaria = false;
 	?>
 		<style>
 			#wppg-from {
@@ -56,12 +57,13 @@ function wppgplugin_admin_submenu() {
 
 				echo "<div class='notice notice-success is-dismissible'>Delete file $dst_db</div>";
 				unlink($dst_db);
+				$wpmaria = true;
 			}
 		}
 		?>
 			<?php wp_nonce_field( 'wppg-action-form' ); ?>
 			<?php
-				if( (defined('DB_DRIVER') && DB_DRIVER == 'pgsql') || !empty($wppg)){
+				if( ((defined('DB_DRIVER') && DB_DRIVER == 'pgsql') && empty($wpmaria)) || !empty($wppg)){
 			?>
 			    	<p>This wordpress is currently using Postgressql database.</p>
 					<input type="hidden" name="pg_action" value="move_mysql">

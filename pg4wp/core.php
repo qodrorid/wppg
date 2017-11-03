@@ -22,22 +22,23 @@ if( (PG4WP_DEBUG || PG4WP_LOG_ERRORS) &&
 // Load the driver defined in 'db.php'
 require_once( PG4WP_ROOT.'/driver_'.DB_DRIVER.'.php');
 
-if(!class_exists('wpdb2')){
-	// This loads up the wpdb class applying appropriate changes to it
-	$replaces = array(
-		'define( '	=> '// define( ',
-		'class wpdb'	=> 'class wpdb2',
-		'new wpdb'	=> 'new wpdb2',
-		'mysql_'	=> 'wppg_sql_',
-		'<?php'		=> '',
-		'?>'		=> '',
-		'is_resource'		=> '!empty',
-	);
-	eval( str_replace( array_keys($replaces), array_values($replaces), file_get_contents(ABSPATH.'/wp-includes/wp-db.php')));
+function wppg_error_handle($errno, $errstr, $errfile, $errline) {
+    if( false === strpos($errstr, 'pg_query') ){
+	    // echo "<b>Custom error:</b> [$errno] $errstr<br>";
+	    // echo " Error on line $errline in $errfile<br>";
+    }
 }
-require_once( PG4WP_ROOT.'/wpdb3.php');
+// hide error before installation
+set_error_handler("wppg_error_handle");
 
-// Create wpdb object if not already done
+require_once( PG4WP_ROOT.'/wpdb2.php');
 if (! isset($wpdb)){
 	$wpdb = new wppg_db( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
+}
+
+// show error after installation
+require_once(ABSPATH.'/wp-includes/cache.php');
+wp_cache_init();
+if( is_blog_installed() ){
+	set_error_handler("wppg_error_handle", 0);
 }
