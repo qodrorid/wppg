@@ -761,40 +761,10 @@ class wppg_db {
 	}
 
 	/**
-	 * Determines the best charset and collation to use given a charset and collation.
-	 *
-	 * For example, when able, utf8mb4 should be used instead of utf8.
-	 *
-	 * @since 4.6.0
-	 * @access public
-	 *
-	 * @param string $charset The character set to check.
-	 * @param string $collate The collation to check.
-	 * @return array The most appropriate character set and collation to use.
+	 * update wppg
 	 */
 	public function determine_charset( $charset, $collate ) {
-		if ( ( $this->use_mysqli && ! ( $this->dbh instanceof mysqli ) ) || empty( $this->dbh ) ) {
-			return compact( 'charset', 'collate' );
-		}
-
-		if ( 'utf8' === $charset && $this->has_cap( 'utf8mb4' ) ) {
-			$charset = 'utf8mb4';
-		}
-
-		if ( 'utf8mb4' === $charset ) {
-			// _general_ is outdated, so we can upgrade it to _unicode_, instead.
-			if ( ! $collate || 'utf8_general_ci' === $collate ) {
-				$collate = 'utf8mb4_unicode_ci';
-			} else {
-				$collate = str_replace( 'utf8_', 'utf8mb4_', $collate );
-			}
-		}
-
-		// _unicode_520_ is a better collation, we should use that when it's available.
-		if ( $this->has_cap( 'utf8mb4_520' ) && 'utf8mb4_unicode_ci' === $collate ) {
-			$collate = 'utf8mb4_unicode_520_ci';
-		}
-
+		$charset = 'utf8';
 		return compact( 'charset', 'collate' );
 	}
 
