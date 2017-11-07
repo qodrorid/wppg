@@ -138,7 +138,7 @@ defined( 'ABSPATH' ) or die();
 		}
 
 		$sql = pg4wp_rewrite( $sql);
-		$GLOBALS['pg4wp_result'] = pg_query($sql);
+		$GLOBALS['pg4wp_result'] = pg_query($GLOBALS['pg4wp_conn'], $sql);
 		
 		if( (PG4WP_DEBUG || PG4WP_LOG_ERRORS) && $GLOBALS['pg4wp_result'] === false && $err = pg_last_error())
 		{
@@ -183,7 +183,7 @@ defined( 'ABSPATH' ) or die();
 		{
 			$sql = "SELECT CURRVAL('$seq')";
 			
-			$res = pg_query($sql);
+			$res = pg_query($GLOBALS['pg4wp_conn'], $sql);
 			if( false !== $res)
 				$data = pg_fetch_result($res, 0, 0);
 			elseif( PG4WP_DEBUG || PG4WP_ERROR_LOG)
