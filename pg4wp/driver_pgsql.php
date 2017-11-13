@@ -447,6 +447,16 @@ defined( 'ABSPATH' ) or die();
 				$sql = preg_replace($pattern, ' "ID" ', $sql);
 		} // CAPITALS
 		
+		// wordfence plugin
+		if( false !== strpos($sql, 'DATABASE()')){
+			$sql = str_replace('DATABASE()', "'information_schema'", $sql);
+		}
+		
+		// create table
+		if( false !== strpos($sql, 'UNSIGNED')){
+			$sql = str_replace('UNSIGNED', '', $sql);
+		}
+		
 		// Empty "IN" statements are erroneous
 		$sql = str_replace( 'IN (\'\')', 'IN (NULL)', $sql);
 		$sql = str_replace( 'IN ( \'\' )', 'IN (NULL)', $sql);
