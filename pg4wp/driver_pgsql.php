@@ -135,9 +135,15 @@ defined( 'ABSPATH' ) or die();
 		$initial = $sql;
 		if(strpos($sql, 'SHOW FULL COLUMNS') !== false){
 			return false;
+		}else if(strpos($sql, 'FROM  WHERE') !== false){
+			return false;
+		}else if(substr($sql, -6) == " FROM "){
+			return false;
 		}
 
+		// echo $sql;
 		$sql = pg4wp_rewrite( $sql);
+		// echo $sql;
 		$GLOBALS['pg4wp_result'] = pg_query($GLOBALS['pg4wp_conn'], $sql);
 		
 		if( (PG4WP_DEBUG || PG4WP_LOG_ERRORS) && $GLOBALS['pg4wp_result'] === false && $err = pg_last_error())
@@ -278,7 +284,7 @@ defined( 'ABSPATH' ) or die();
 			$sql = preg_replace( $pattern, ' CASE WHEN $1 THEN $2 ELSE $3 END', $sql);
 			
 			// $sql = str_replace('GROUP BY '.$wpdb->prefix.'posts.ID', '' , $sql);
-			$sql = str_replace("!= ''", '<> 0', $sql);
+			// $sql = str_replace("!= ''", '<> 0', $sql);
 			
 			// MySQL 'LIKE' is case insensitive by default, whereas PostgreSQL 'LIKE' is
 			$sql = str_replace( ' LIKE ', ' ILIKE ', $sql);
@@ -366,7 +372,7 @@ defined( 'ABSPATH' ) or die();
 			// When installing, the sequence for table terms has to be updated
 			if( defined('WP_INSTALLING') && WP_INSTALLING && false !== strpos($sql, 'INSERT INTO `'.$wpdb->terms.'`'))
 				$end .= ';SELECT setval(\''.$wpdb->terms.'_seq\', (SELECT MAX(term_id) FROM '.$wpdb->terms.')+1);';
-			
+
 		} // INSERT
 		elseif( 0 === strpos( $sql, 'DELETE' ))
 		{
@@ -405,7 +411,7 @@ defined( 'ABSPATH' ) or die();
 			$sql = "SET NAMES 'utf8'";
 		}
 		// Load up upgrade and install functions as required
-		$begin = substr( $sql, 0, 3);
+		$begin = substr( strtoupper($sql), 0, 3);
 		$search = array( 'SHO', 'ALT', 'DES', 'CRE', 'DRO');
 		if( in_array($begin, $search))
 		{
@@ -446,15 +452,8 @@ defined( 'ABSPATH' ) or die();
 			$pattern = '/"ID "/';
 				$sql = preg_replace($pattern, ' "ID" ', $sql);
 		} // CAPITALS
-		
-		// wordfence plugin
 		if( false !== strpos($sql, 'DATABASE()')){
 			$sql = str_replace('DATABASE()', "'information_schema'", $sql);
-		}
-		
-		// create table
-		if( false !== strpos($sql, 'UNSIGNED')){
-			$sql = str_replace('UNSIGNED', '', $sql);
 		}
 		
 		// Empty "IN" statements are erroneous
@@ -464,6 +463,11 @@ defined( 'ABSPATH' ) or die();
 		
 		// Put back the end of the query if it was separated
 		$sql .= $end;
+
+		if( false !== strpos(strtoupper($sql), 'IGNORE') ){
+			$sql = str_replace(' IGNORE', '', $sql);
+			$sql .= " ON CONFLICT DO NOTHING";
+		}
 		
 		// For insert ID catching
 		if( $logto == 'INSERT')
