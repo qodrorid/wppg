@@ -314,6 +314,9 @@ defined( 'ABSPATH' ) or die();
 			// For correct ID quoting
 			$pattern = '/[ ]*([^ ]*ID[^ ]*)[ ]*=/';
 			$sql = preg_replace( $pattern, ' "$1" =', $sql);
+
+			// fixing post_date_gmt
+			$sql = str_replace('0000-00-00 00:00:00', date('Y-m-d H:i:s'), $sql);
 			
 			// This will avoid modifications to anything following ' SET '
 			list($sql,$end) = explode( ' SET ', $sql, 2);
