@@ -464,6 +464,16 @@ defined( 'ABSPATH' ) or die();
 		$sql = str_replace( 'IN ( \'\' )', 'IN (NULL)', $sql);
 		$sql = str_replace( 'IN ()', 'IN (NULL)', $sql);
 		
+		// Fixing error operator not found in text field type
+		if (strpos($sql, 'meta_value <') !== false) {
+			$sql = str_replace( 'meta_value <', 'meta_value !=', $sql);
+			$sql = preg_replace("/meta_value != ([0-9]+)/", "meta_value != '$1'", $sql);
+		}
+		if (strpos($sql, 'meta_value >') !== false) {
+			$sql = str_replace( 'meta_value >', 'meta_value !=', $sql);
+			$sql = preg_replace("/meta_value != ([0-9]+)/", "meta_value != '$1'", $sql);
+		}
+		
 		// Put back the end of the query if it was separated
 		$sql .= $end;
 
