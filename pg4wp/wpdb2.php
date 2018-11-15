@@ -2941,7 +2941,7 @@ class wppg_db {
 		if ( $this->use_mysqli ) {
 			$closed = mysqli_close( $this->dbh );
 		} else {
-			$closed = wppg_sql_close( $this->dbh );
+			$closed = pg_close( $this->dbh );
 		}
 
 		if ( $closed ) {
