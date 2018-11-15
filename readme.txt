@@ -1,17 +1,18 @@
 === WPPG ===
 Contributors: QODR (http://qodr.or.id/)
-Donate link: https://www.paypal.me/agusnurwanto/
 Tags: database, postgresql, PostgreSQL, postgres, mysql
+Donate link: https://www.paypal.me/agusnurwanto/
 Requires at least: 2.9.2
-Tested up to: 4.8.3
-Stable tag: 1.0.0
+Tested up to: 4.9.0
+Requires PHP: > 5.0
+Stable tag: 1.0.1
 License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-WPPG is a special 'plugin' enabling WordPress to be used with a PostgreSQL database. Redevelop from PG4WP plugin http://wordpress.org/plugins/postgresql-for-wordpress/
+WPPG is a special plugin enabling WordPress to be used with a PostgreSQL database. Redevelop from PG4WP plugin http://wordpress.org/plugins/postgresql-for-wordpress/
 
 == Description ==
-
-WPPG is a special 'plugin' enabling WordPress to be used with a PostgreSQL database. Redevelop from [PG4WP plugin](http://wordpress.org/plugins/postgresql-for-wordpress/).
+WPPG is a special plugin enabling WordPress to be used with a PostgreSQL database. Redevelop from [PG4WP plugin](http://wordpress.org/plugins/postgresql-for-wordpress/).
 
 Github: [https://github.com/qodrorid/wppg](https://github.com/qodrorid/wppg)
 
@@ -25,7 +26,6 @@ If you want to use this plugin, you should be aware of the following :
 You shouldn't expect any plugin specific code to be integrated into WPPG except for plugins shipped with WordPress itself (such as Akismet).
 
 == Installation ==
-
 - Install and active postgress db in Settings > WPPG > change database to Postgressql
 - Create database and user in your Postgressql
 	- open your terminal in linux
@@ -37,24 +37,10 @@ You shouldn't expect any plugin specific code to be integrated into WPPG except 
 	- \q for exit
 - Update your wp-config.php file
 
-== Uninstall ==
-
-- Remove file wp-content/db.php
-- Remove folder wp-content/pg4wp
-
-== Frequently Asked Questions ==
-
 == Screenshots ==
-
 1. /assets/screenshot-1.png
 2. /assets/screenshot-2.png
 
-== Changelog ==
-
+== Upgrade Notice ==
 = 1.0 =
 Initial stable release
-
-== License ==
-WPPG is provided "as-is" with no warranty in the hope it can be useful.
-
-WPPG is licensed under the [GNU GPL](http://www.gnu.org/licenses/gpl.html "GNU GPL") v2 or any newer version at your choice.

@@ -314,6 +314,9 @@ defined( 'ABSPATH' ) or die();
 			// For correct ID quoting
 			$pattern = '/[ ]*([^ ]*ID[^ ]*)[ ]*=/';
 			$sql = preg_replace( $pattern, ' "$1" =', $sql);
+
+			// fixing post_date_gmt
+			$sql = str_replace('0000-00-00 00:00:00', date('Y-m-d H:i:s'), $sql);
 			
 			// This will avoid modifications to anything following ' SET '
 			list($sql,$end) = explode( ' SET ', $sql, 2);
@@ -460,6 +463,16 @@ defined( 'ABSPATH' ) or die();
 		$sql = str_replace( 'IN (\'\')', 'IN (NULL)', $sql);
 		$sql = str_replace( 'IN ( \'\' )', 'IN (NULL)', $sql);
 		$sql = str_replace( 'IN ()', 'IN (NULL)', $sql);
+		
+		// Fixing error operator not found in text field type
+		if (strpos($sql, 'meta_value <') !== false) {
+			$sql = str_replace( 'meta_value <', 'meta_value !=', $sql);
+			$sql = preg_replace("/meta_value != ([0-9]+)/", "meta_value != '$1'", $sql);
+		}
+		if (strpos($sql, 'meta_value >') !== false) {
+			$sql = str_replace( 'meta_value >', 'meta_value !=', $sql);
+			$sql = preg_replace("/meta_value != ([0-9]+)/", "meta_value != '$1'", $sql);
+		}
 		
 		// Put back the end of the query if it was separated
 		$sql .= $end;
