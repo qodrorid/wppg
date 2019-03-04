@@ -19,3 +19,7 @@ How to uninstall WPPG
 
 - Remove file wp-content/db.php
 - Remove folder wp-content/pg4wp
+
+Bug
+
+- $wpdb->insert_id not working, for get last id use "select max(id) from table_name"
