@@ -158,9 +158,9 @@ $sql = "SELECT pg_attribute.attname AS \"Field\",
 		ELSE 'YES'
 	END AS \"Null\",
 	CASE pg_type.typname
-		WHEN 'varchar' THEN substring(pg_attrdef.adsrc FROM '^''(.*)''.*$')
-		WHEN 'timestamp' THEN CASE WHEN pg_attrdef.adsrc LIKE '%now()%' THEN '0000-00-00 00:00:00' ELSE pg_attrdef.adsrc END
-		ELSE pg_attrdef.adsrc
+		WHEN 'varchar' THEN substring(pg_get_expr(pg_attrdef.adbin, pg_attribute.attrelid) FROM '^''(.*)''.*$')
+		WHEN 'timestamp' THEN CASE WHEN pg_get_expr(pg_attrdef.adbin, pg_attribute.attrelid) LIKE '%now()%' THEN '0000-00-00 00:00:00' ELSE pg_get_expr(pg_attrdef.adbin, pg_attribute.attrelid) END
+		ELSE pg_get_expr(pg_attrdef.adbin, pg_attribute.attrelid)
 	END AS \"Default\"
 FROM pg_class
 	INNER JOIN pg_attribute
